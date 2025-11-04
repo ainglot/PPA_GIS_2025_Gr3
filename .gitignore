@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# ArcGIS
+*.lock
+*.gdb/
+Thumbs.db
+.DS_Store
+
+# Ścieżki
+D:\GIS\*.gdb  # Pomijaj lokalne geobazy
