@@ -34,10 +34,30 @@ def wstawianie_wspolrzednych(warstwa):
             cursor.updateRow(row) 
 
 def nowa_warstwa_punktowa(nazwa_warstwy, uklad_wsp):
+    list_coor = odczytywanie_pliku_txt("data.txt")
     arcpy.management.CreateFeatureclass(arcpy.env.workspace, nazwa_warstwy, "POINT", "", "DISABLED", "DISABLED", uklad_wsp)
+    with arcpy.da.InsertCursor(nazwa_warstwy, ["SHAPE@X", "SHAPE@Y"]) as cursor:
+        for coor in list_coor:
+            X = coor[0] + 469839
+            Y = coor[1] + 741088
+            cursor.insertRow([X, Y])
+
+def odczytywanie_pliku_txt(plik_txt):
+    # Sposób 1 - najprostszy i najczęściej używany
+    with open(plik_txt, 'r') as f:
+        coordinates = []
+        for line in f:
+            line = line.strip()          # usuwa \n i ewentualne spacje na końcu
+            if line:                     # pomija puste linie
+                x, y, z = map(float, line.split())
+                coordinates.append([x, y, z])
+    return coordinates
 
 
 # odczytywanie_wspolrzednych(warstwa_drzew)
-aktualizacja_wspolrzednych(warstwa_drzew)
+# aktualizacja_wspolrzednych(warstwa_drzew)
+
+print(odczytywanie_pliku_txt("data.txt")[:50])
+nowa_warstwa_punktowa("silos_02", 2180)
 
 print("KONIEC")
