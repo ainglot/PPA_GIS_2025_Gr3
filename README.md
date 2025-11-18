@@ -42,6 +42,20 @@ Witaj! To repozytorium zawiera dwa skrypty Pythona z użyciem biblioteki `arcpy`
 
 **Uwagi:** Obsługuje błędy (try/except). Dodaj `.gitignore` dla plików tymczasowych.
 
+### 3. `warstwa puktowa.py`
+**Opis:** Skrypt do odczywywania i aktualizowania współrzędnych w istniejącej warstiwe wektorowej oraz budowania nowej warstwy punktowej:
+- Funkcja do odczytywania współrzędnych z warstwy punktowej.
+- Funkcja do modyfikacji współrzędnych warstwy punktowej.
+- Budowanie nowej warstwy punktowej wraz z wstawianiem punktów z pliku txt.
+- Przykład generowania warstwy punktowej 3D dla danych X, Y i Z.
+
+**Jak użyć:**
+1. Wykorzystaj odpowiednie funkcje - `odczytywanie_wspolrzednych`, `aktualizacja_wspolrzednych`, `wstawianie_wspolrzednych`.
+2. Uruchom – skrypt trzeba dostosować do swoich potrzeb.
+
+**Przykładowe wejście/wyjście:**
+- Wejście: dane pozyskane z BDOT10k `GDA2020_OT_OIPR_P` w GDB.
+
 ## Instalacja i Uruchomienie
 1. Sklonuj repo: `git clone https://github.com/TwojeKonto/PPA_ArcGIS_Skrypty.git`.
 2. Otwórz w VS Code.
