@@ -18,17 +18,18 @@ def odczytywanie_wspolrzednych(warstwa):
             i += 1
             print(i, row)
             ListaWsp.append(row)
+    return ListaWsp
 
 def nowa_warstwa_punktowa(nazwa_warstwy, uklad_wsp, list_coor):
     # list_coor = odczytywanie_pliku_txt("data.txt")
-    arcpy.management.CreateFeatureclass(arcpy.env.workspace, nazwa_warstwy, "POINT", "", "DISABLED", "ENABLED", uklad_wsp)
-    with arcpy.da.InsertCursor(nazwa_warstwy, ["SHAPE@X", "SHAPE@Y", "SHAPE@Z"]) as cursor:
+    arcpy.management.CreateFeatureclass(arcpy.env.workspace, nazwa_warstwy, "POINT", "", "DISABLED", "DISABLED", uklad_wsp)
+    with arcpy.da.InsertCursor(nazwa_warstwy, ["SHAPE@X", "SHAPE@Y"]) as cursor:
         for coor in list_coor:
             X = coor[0]
             Y = coor[1]
-            Z = coor[2]
-            cursor.insertRow([X, Y, Z])
+            cursor.insertRow([X, Y])
 
 ListaWSP = odczytywanie_wspolrzednych(warstwa_poly_in)
 print(ListaWSP)
+nowa_warstwa_punktowa("CentroidyRWSR", warstwa_poly_in, ListaWSP)
 print("KONIEC")
