@@ -37,8 +37,9 @@ def nowa_warstwa_punktowa(nazwa_warstwy, uklad_wsp, list_coor):
             array.removeAll()
             cursor.insertRow([poly])
 
-ListaLinii = odczytywanie_wspolrzednych(warstwa_poly_in)[:10]
-print(ListaLinii[-1])
-print(len(ListaLinii))
-nowa_warstwa_punktowa("LinieRWSR", warstwa_poly_in, ListaLinii)
+ListaLinii = odczytywanie_wspolrzednych(warstwa_poly_in)
+lines_reduced = [line[::2] for line in ListaLinii]
+
+
+nowa_warstwa_punktowa("LinieRWSR_02", warstwa_poly_in, lines_reduced)
 print("KONIEC")
