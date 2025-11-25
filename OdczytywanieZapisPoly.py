@@ -4,7 +4,7 @@ import arcpy
 # KONFIGURACJA ŚRODOWISKA
 # ===================================================================
 arcpy.env.workspace = r"D:\GIS\Rok_2025_26\PPA_ArcGIS\PPA_Gr3.gdb"
-warstwa_poly_in = "GDA2014_OT_SWRS_L"
+warstwa_poly_in = "GDA2014_OT_ADMS_A"
 
 # ===================================================================
 # ZDEFINIOWANE FUNKCJE DLA WARSTWY LINIOWEJ LUB POLIGONOWEJ
@@ -24,7 +24,7 @@ def odczytywanie_wspolrzednych(warstwa):
     return ListaOb
 
 def nowa_warstwa_punktowa(nazwa_warstwy, uklad_wsp, list_coor):
-    arcpy.management.CreateFeatureclass(arcpy.env.workspace, nazwa_warstwy, "POLYLINE", "", "DISABLED", "DISABLED", uklad_wsp)
+    arcpy.management.CreateFeatureclass(arcpy.env.workspace, nazwa_warstwy, "POLYGON", "", "DISABLED", "DISABLED", uklad_wsp)
     array = arcpy.Array()
     pnt = arcpy.Point()
     with arcpy.da.InsertCursor(nazwa_warstwy, ["SHAPE@"]) as cursor:
@@ -33,13 +33,13 @@ def nowa_warstwa_punktowa(nazwa_warstwy, uklad_wsp, list_coor):
                 pnt.X = coor[0]
                 pnt.Y = coor[1]
                 array.add(pnt)
-            poly = arcpy.Polyline(array)
+            poly = arcpy.Polygon(array)
             array.removeAll()
             cursor.insertRow([poly])
 
-ListaLinii = odczytywanie_wspolrzednych(warstwa_poly_in)
-lines_reduced = [line[::2] for line in ListaLinii]
+ListaLinii = odczytywanie_wspolrzednych(warstwa_poly_in)[:10]
+# lines_reduced = [line[::2] for line in ListaLinii]
 
 
-nowa_warstwa_punktowa("LinieRWSR_02", warstwa_poly_in, lines_reduced)
+nowa_warstwa_punktowa("ADMS_01", warstwa_poly_in, ListaLinii)
 print("KONIEC")
