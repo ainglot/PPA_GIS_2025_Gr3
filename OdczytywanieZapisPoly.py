@@ -12,17 +12,19 @@ warstwa_poly_in = "GDA2014_OT_SWRS_L"
 
 def odczytywanie_wspolrzednych(warstwa):
     i = 0
-    ListaWsp = []
+    ListaOb = []
     with arcpy.da.SearchCursor(warstwa, ["SHAPE@"]) as cursor:
         for row in cursor:
             i += 1
+            ListaWsp = []
             print(i, row)
             for parth in row[0]:
                 print(parth)
                 for pnt in parth:
                     print("  ", pnt.X, pnt.Y)
-            # ListaWsp.append(row)
-    return ListaWsp
+                    ListaWsp.append([pnt.X, pnt.Y])
+            ListaOb.append(ListaWsp)
+    return ListaOb
 
 # def nowa_warstwa_punktowa(nazwa_warstwy, uklad_wsp, list_coor):
 #     # list_coor = odczytywanie_pliku_txt("data.txt")
@@ -33,7 +35,7 @@ def odczytywanie_wspolrzednych(warstwa):
 #             Y = coor[1]
 #             cursor.insertRow([X, Y])
 
-ListaWSP = odczytywanie_wspolrzednych(warstwa_poly_in)
-# print(ListaWSP)
+ListaLinii = odczytywanie_wspolrzednych(warstwa_poly_in)
+print(ListaLinii[-1])
 # nowa_warstwa_punktowa("CentroidyRWSR", warstwa_poly_in, ListaWSP)
 print("KONIEC")
