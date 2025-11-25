@@ -17,25 +17,28 @@ def odczytywanie_wspolrzednych(warstwa):
         for row in cursor:
             i += 1
             ListaWsp = []
-            print(i, row)
             for parth in row[0]:
-                print(parth)
                 for pnt in parth:
-                    print("  ", pnt.X, pnt.Y)
                     ListaWsp.append([pnt.X, pnt.Y])
             ListaOb.append(ListaWsp)
     return ListaOb
 
-# def nowa_warstwa_punktowa(nazwa_warstwy, uklad_wsp, list_coor):
-#     # list_coor = odczytywanie_pliku_txt("data.txt")
-#     arcpy.management.CreateFeatureclass(arcpy.env.workspace, nazwa_warstwy, "POINT", "", "DISABLED", "DISABLED", uklad_wsp)
-#     with arcpy.da.InsertCursor(nazwa_warstwy, ["SHAPE@X", "SHAPE@Y"]) as cursor:
-#         for coor in list_coor:
-#             X = coor[0]
-#             Y = coor[1]
-#             cursor.insertRow([X, Y])
+def nowa_warstwa_punktowa(nazwa_warstwy, uklad_wsp, list_coor):
+    arcpy.management.CreateFeatureclass(arcpy.env.workspace, nazwa_warstwy, "POLYLINE", "", "DISABLED", "DISABLED", uklad_wsp)
+    array = arcpy.Array()
+    pnt = arcpy.Point()
+    with arcpy.da.InsertCursor(nazwa_warstwy, ["SHAPE@"]) as cursor:
+        for ob in list_coor:
+            for coor in ob:
+                pnt.X = coor[0]
+                pnt.Y = coor[1]
+                array.add(pnt)
+            poly = arcpy.Polyline(array)
+            array.removeAll()
+            cursor.insertRow([poly])
 
-ListaLinii = odczytywanie_wspolrzednych(warstwa_poly_in)
+ListaLinii = odczytywanie_wspolrzednych(warstwa_poly_in)[:10]
 print(ListaLinii[-1])
-# nowa_warstwa_punktowa("CentroidyRWSR", warstwa_poly_in, ListaWSP)
+print(len(ListaLinii))
+nowa_warstwa_punktowa("LinieRWSR", warstwa_poly_in, ListaLinii)
 print("KONIEC")
