@@ -71,28 +71,49 @@ def punkt_juz_istnieje(p, zbior_punktow2014):
 
 # 1. Tworzymy zbiór wszystkich punktów z 2014 (unikalne z tolerancją)
 zbior2014 = set()
+zbior2020 = set()
 
 for linia in Lista2014:
     for x, y in linia:
         p = Point(round(x / TOLERANCJA), round(y / TOLERANCJA))  # siatka zaokrąglona do tolerancji
         zbior2014.add(p)
+for linia in Lista2020:
+    for x, y in linia:
+        p = Point(round(x / TOLERANCJA), round(y / TOLERANCJA))  # siatka zaokrąglona do tolerancji
+        zbior2020.add(p)
 
 # 2. Sprawdzamy każdy punkt z 2020
-nowe_punkty = []
-istniejace_punkty = []
+nowe_punkty2020 = []
+istniejace_punkty2020 = []
 
 for linia2020 in Lista2020:
     for x, y in linia2020:
         p = Point(round(x / TOLERANCJA), round(y / TOLERANCJA))
         if p not in zbior2014:
-            nowe_punkty.append([x, y])
+            nowe_punkty2020.append([x, y])
         else:
-            istniejace_punkty.append([x, y])
+            istniejace_punkty2020.append([x, y])
+# 2. Sprawdzamy każdy punkt z 2014
+nowe_punkty2014 = []
+istniejace_punkty2014 = []
 
-print(f"Liczba WSZYSTKICH punktów w 2020: {len(nowe_punkty) + len(istniejace_punkty)}")
-print(f"Liczba punktów ISTNIEJĄCYCH już w 2014: {len(istniejace_punkty)}")
-print(f"Liczba NOWYCH punktów w 2020:       {len(nowe_punkty)}")
-print(nowe_punkty[:20])
-nowa_warstwa_punktowa("Punkty_2020", warstwa_poly_in_2020, nowe_punkty)
+for linia2014 in Lista2014:
+    for x, y in linia2014:
+        p = Point(round(x / TOLERANCJA), round(y / TOLERANCJA))
+        if p not in zbior2020:
+            nowe_punkty2014.append([x, y])
+        else:
+            istniejace_punkty2014.append([x, y])
+
+print(f"Liczba WSZYSTKICH punktów w 2020: {len(nowe_punkty2020) + len(istniejace_punkty2020)}")
+print(f"Liczba punktów ISTNIEJĄCYCH już w 2014: {len(istniejace_punkty2020)}")
+print(f"Liczba NOWYCH punktów w 2020:       {len(nowe_punkty2020)}")
+# nowa_warstwa_punktowa("Punkty_2020", warstwa_poly_in_2020, nowe_punkty2020)
+
+print(f"Liczba WSZYSTKICH punktów w 2014: {len(nowe_punkty2014) + len(istniejace_punkty2014)}")
+print(f"Liczba punktów ISTNIEJĄCYCH już w 2020: {len(istniejace_punkty2014)}")
+print(f"Liczba NOWYCH punktów w 2014:       {len(nowe_punkty2014)}")
+# print(nowe_punkty[:20])
+nowa_warstwa_punktowa("Punkty_2014v2", warstwa_poly_in_2020, nowe_punkty2014)
 
 print("KONIEC")
