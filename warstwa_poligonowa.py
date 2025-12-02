@@ -4,7 +4,7 @@ import arcpy
 # KONFIGURACJA ŚRODOWISKA
 # ===================================================================
 arcpy.env.workspace = r"D:\GIS\Rok_2025_26\PPA_ArcGIS\PPA_Gr3.gdb"
-warstwa_poligonowa = "Budynek"
+warstwa_poligonowa = "Budynki"
 
 # ===================================================================
 # ZDEFINIOWANE FUNKCJE DLA WARSTWY LINIOWEJ LUB POLIGONOWEJ
@@ -64,7 +64,7 @@ for ob in listaPOLY:
     i += 1
 print(listaPOLY[0][0])
 
-Nowy_Budynek = "Budynek02"
+Nowy_Budynek = "Budynki01"
 nowa_warstwa_poligonowa(Nowy_Budynek, warstwa_poligonowa, listaPOLY)
 
 
