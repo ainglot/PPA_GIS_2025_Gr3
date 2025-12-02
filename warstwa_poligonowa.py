@@ -15,14 +15,16 @@ warstwa_poligonowa = "Budynek"
 def odczytywanie_wspolrzednych_poligonu(warstwa):
     i = 0
     ListaOb = []
-    with arcpy.da.SearchCursor(warstwa, ["SHAPE@"]) as cursor:
+    Centr = []
+    with arcpy.da.SearchCursor(warstwa, ["SHAPE@", "SHAPE@XY"]) as cursor:
         for row in cursor:
             i += 1
             ListaPart = []
+            Centr.append(row[1])
             for parth in row[0]:
                 ListaWsp = []
                 for pnt in parth:
-                    print(pnt)
+                    # print(pnt)
                     if pnt:
                         ListaWsp.append([pnt.X, pnt.Y])
                     else:
@@ -30,7 +32,7 @@ def odczytywanie_wspolrzednych_poligonu(warstwa):
                         ListaWsp = []
                 ListaPart.append(ListaWsp)
             ListaOb.append(ListaPart)
-    return ListaOb
+    return ListaOb, Centr
 
 def nowa_warstwa_poligonowa(nazwa_warstwy, uklad_wsp, list_coor):
     arcpy.management.CreateFeatureclass(arcpy.env.workspace, nazwa_warstwy, "POLYGON", "", "DISABLED", "DISABLED", uklad_wsp)
@@ -50,9 +52,19 @@ def nowa_warstwa_poligonowa(nazwa_warstwy, uklad_wsp, list_coor):
             array.removeAll()
             cursor.insertRow([poly])
 
-listaPOLY = odczytywanie_wspolrzednych_poligonu(warstwa_poligonowa)
+listaPOLY, listaCENTR = odczytywanie_wspolrzednych_poligonu(warstwa_poligonowa)
+print(listaPOLY[0][0])
 
-Nowy_Budynek = "Budynek01"
+i=0
+for ob in listaPOLY:
+    for part in ob:
+        for pkt in part:
+            pkt[0] = (pkt[0]-listaCENTR[i][0])*0.5+listaCENTR[i][0]
+            pkt[1] = (pkt[1]-listaCENTR[i][1])*0.5+listaCENTR[i][1]
+    i += 1
+print(listaPOLY[0][0])
+
+Nowy_Budynek = "Budynek02"
 nowa_warstwa_poligonowa(Nowy_Budynek, warstwa_poligonowa, listaPOLY)
 
 
