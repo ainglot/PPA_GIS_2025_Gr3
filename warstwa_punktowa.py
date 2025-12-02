@@ -57,48 +57,48 @@ def odczytywanie_pliku_txt(plik_txt):
     return coordinates
 
 
-# odczytywanie_wspolrzednych(warstwa_drzew)
-# aktualizacja_wspolrzednych(warstwa_drzew)
+odczytywanie_wspolrzednych(warstwa_drzew)
+aktualizacja_wspolrzednych(warstwa_drzew)
 
-# print(odczytywanie_pliku_txt("data.txt")[:50])
+print(odczytywanie_pliku_txt("data.txt")[:50])
 
-# nowa_warstwa_punktowa("silos_03", 2180)
+nowa_warstwa_punktowa("silos_03", 2180)
 
-coor_silos = odczytywanie_pliku_txt("data.txt")
+# coor_silos = odczytywanie_pliku_txt("data.txt")
 
-# 2. Znajdź minimalną i maksymalną wartość Z
-z_values = [p[2] for p in coor_silos]
-z_min = min(z_values)
-z_max = max(z_values)
+# # 2. Znajdź minimalną i maksymalną wartość Z
+# z_values = [p[2] for p in coor_silos]
+# z_min = min(z_values)
+# z_max = max(z_values)
 
-print(f"Z zakres: {z_min:.3f} → {z_max:.3f}")
+# print(f"Z zakres: {z_min:.3f} → {z_max:.3f}")
 
-# 3. Grupowanie co 2 metry (przedziały: [z_min, z_min+2), [z_min+2, z_min+4), ...)
-step = 2.0
-layers = defaultdict(list)   # klucz = początek przedziału, wartość = lista punktów
+# # 3. Grupowanie co 2 metry (przedziały: [z_min, z_min+2), [z_min+2, z_min+4), ...)
+# step = 2.0
+# layers = defaultdict(list)   # klucz = początek przedziału, wartość = lista punktów
 
-for x, y, z in coor_silos:
-    # który przedział?
-    layer_start = (z - z_min) // step * step + z_min   # zaokrągla w dół do najbliższego wielokrotności 2 m
-    layers[layer_start].append([x, y, z])
+# for x, y, z in coor_silos:
+#     # który przedział?
+#     layer_start = (z - z_min) // step * step + z_min   # zaokrągla w dół do najbliższego wielokrotności 2 m
+#     layers[layer_start].append([x, y, z])
 
-# 4. Obliczenie średnich X i Y dla każdej warstwy
-print("\nWarstwa (Z)      |  Liczba punktów  |  Średnie X   |  Średnie Y")
-print("-" * 65)
+# # 4. Obliczenie średnich X i Y dla każdej warstwy
+# print("\nWarstwa (Z)      |  Liczba punktów  |  Średnie X   |  Średnie Y")
+# print("-" * 65)
 
-coor_prze = []
-for layer_z in sorted(layers.keys()):
-    points = layers[layer_z]
-    xs = [p[0] for p in points]
-    ys = [p[1] for p in points]
+# coor_prze = []
+# for layer_z in sorted(layers.keys()):
+#     points = layers[layer_z]
+#     xs = [p[0] for p in points]
+#     ys = [p[1] for p in points]
     
-    avg_x = np.mean(xs)
-    avg_y = np.mean(ys)
-    count = len(points)
+#     avg_x = np.mean(xs)
+#     avg_y = np.mean(ys)
+#     count = len(points)
     
-    z_end = layer_z + step
-    print(f"{layer_z:6.3f} – {z_end:6.3f} m  |  {count:12}    |  {avg_x:8.3f}   |  {avg_y:8.3f}")
-    coor_prze.append([avg_x + 469839, avg_y + 741088, layer_z+1])
-print(coor_prze)
-nowa_warstwa_punktowa("silos_04", 2180, coor_prze)
+#     z_end = layer_z + step
+#     print(f"{layer_z:6.3f} – {z_end:6.3f} m  |  {count:12}    |  {avg_x:8.3f}   |  {avg_y:8.3f}")
+#     coor_prze.append([avg_x + 469839, avg_y + 741088, layer_z+1])
+# print(coor_prze)
+# nowa_warstwa_punktowa("silos_04", 2180, coor_prze)
 print("KONIEC")
