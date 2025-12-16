@@ -51,17 +51,20 @@ for raster in rasters:
     ListaExtentR.append([raster, [R.extent.XMin, R.extent.YMin, R.extent.XMax, R.extent.YMax]])
 
 PKT = [474467.48060000036, 720576.0291000009]
+PKT = [474192.0, 720689.0]
 for rast_ext in ListaExtentR:
     # print(punkt_na_rastrze(PKT, rast_ext[1]))
     if punkt_na_rastrze(PKT, rast_ext[1]):
         cellSIZE = R.meanCellWidth
+        print(rast_ext[0], cellSIZE)
         XMIN = rast_ext[1][0] + (cellSIZE*0.5)
         YMAX = rast_ext[1][3] - (cellSIZE*0.5)
         dx = (PKT[0] - XMIN)/cellSIZE
         dy = (YMAX - PKT[1])/cellSIZE
         col = int(dx)
         row = int(dy)
+        R = arcpy.Raster(rast_ext[0])
         R_array = arcpy.RasterToNumPyArray(R, nodata_to_value=np.nan)
-        print(dx, dy, R_array[col, row])
+        print(dx, dy, R_array[row, col], R_array[col, row])
 
 print(ListaExtentR)
