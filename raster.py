@@ -4,8 +4,8 @@ import numpy as np
 # ===================================================================
 # KONFIGURACJA ŚRODOWISKA
 # ===================================================================
-arcpy.env.workspace = r"C:\UMCS\PythonZajecia\ArcGIS_UMCS\Rastry"
-RasterIn = "67473_795060_M-34-34-A-c-1-2.asc"
+arcpy.env.workspace = r"D:\GIS\Rok_2025_26\PPA_ArcGIS\NMT"
+RasterIn = "81008_1561328_N-34-50-C-d-3-3.asc"
 arcpy.env.outputCoordinateSystem = arcpy.SpatialReference(2180)  # układ 2180
 
 # ===================================================================
