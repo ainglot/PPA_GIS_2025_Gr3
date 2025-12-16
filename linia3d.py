@@ -1,5 +1,6 @@
 import arcpy
 import numpy as np
+import math
 
 # ===================================================================
 # KONFIGURACJA ŚRODOWISKA DLA WEKTORÓW
@@ -43,6 +44,19 @@ def nowa_warstwa_punktowa(nazwa_warstwy, uklad_wsp, list_coor):
             Z = coor[2]
             cursor.insertRow([X, Y, Z, Z])
 
+def odleglosc_3d(p1, p2):
+    x1, y1, z1 = p1
+    x2, y2, z2 = p2
+    return math.sqrt(
+        (x2 - x1)**2 +
+        (y2 - y1)**2 +
+        (z2 - z1)**2
+    )
+
+def odleglosc_2d(p1, p2):
+    x1, y1, z1 = p1
+    x2, y2, z2 = p2
+    return math.hypot(x2 - x1, y2 - y1)
 
 WspLini = odczytywanie_wspolrzednych(warstwa_linii)
 print(WspLini)
@@ -83,6 +97,14 @@ for linia in WspLini:
                     ListaPKT.append([PKT[0], PKT[1], R_array[row, col]])
 
 arcpy.env.workspace = r"D:\GIS\Rok_2025_26\PPA_ArcGIS\Geobaza ZTM\ZTM197.gdb"
-nowa_warstwa_punktowa("Punkty3D_ZTM_03", warstwa_linii, ListaPKT)
+# nowa_warstwa_punktowa("Punkty3D_ZTM_03", warstwa_linii, ListaPKT)
 
+s2D = 0.
+s3D = 0.
+for i in range(len(ListaPKT)-1):
+    xyz0 = ListaPKT[i]
+    xyz1 = ListaPKT[i+1]
+    s2D += odleglosc_2d(xyz0, xyz1)
+    s3D += odleglosc_3d(xyz0, xyz1)
+print(s2D, s3D)
 print("KONIEC")
