@@ -78,9 +78,10 @@ for linia in WspLini:
                 R = arcpy.Raster(rast_ext[0])
                 R_array = arcpy.RasterToNumPyArray(R, nodata_to_value=np.nan)
                 print(dx, dy, R_array[row, col])
-                ListaPKT.append([PKT[0], PKT[1], R_array[row, col]])
+                if R_array[row, col] is not np.nan:
+                    ListaPKT.append([PKT[0], PKT[1], R_array[row, col]])
 
 arcpy.env.workspace = r"D:\GIS\Rok_2025_26\PPA_ArcGIS\Geobaza ZTM\ZTM197.gdb"
-nowa_warstwa_punktowa("Punkty3D_ZTM", warstwa_linii, ListaPKT)
+nowa_warstwa_punktowa("Punkty3D_ZTM_01", warstwa_linii, ListaPKT)
 
 print("KONIEC")
