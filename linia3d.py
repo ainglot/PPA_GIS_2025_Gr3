@@ -51,6 +51,12 @@ for raster in rasters:
 
 PKT = [474467.48060000036, 720576.0291000009]
 for rast_ext in ListaExtentR:
-    punkt_na_rastrze(PKT, rast_ext[1])
+    print(punkt_na_rastrze(PKT, rast_ext[1]))
+    cellSIZE = R.meanCellWidth
+    XMIN = rast_ext[1][0] + (cellSIZE*0.5)
+    YMAX = rast_ext[1][3] - (cellSIZE*0.5)
+    dx = (PKT[0] - XMIN)/cellSIZE
+    dy = (YMAX - PKT[1])/cellSIZE
+    print(dx, dy)
 
 print(ListaExtentR)
