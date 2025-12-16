@@ -1,4 +1,5 @@
 import arcpy
+import numpy as np
 
 # ===================================================================
 # KONFIGURACJA ŚRODOWISKA DLA WEKTORÓW
@@ -51,12 +52,16 @@ for raster in rasters:
 
 PKT = [474467.48060000036, 720576.0291000009]
 for rast_ext in ListaExtentR:
-    print(punkt_na_rastrze(PKT, rast_ext[1]))
-    cellSIZE = R.meanCellWidth
-    XMIN = rast_ext[1][0] + (cellSIZE*0.5)
-    YMAX = rast_ext[1][3] - (cellSIZE*0.5)
-    dx = (PKT[0] - XMIN)/cellSIZE
-    dy = (YMAX - PKT[1])/cellSIZE
-    print(dx, dy)
+    # print(punkt_na_rastrze(PKT, rast_ext[1]))
+    if punkt_na_rastrze(PKT, rast_ext[1]):
+        cellSIZE = R.meanCellWidth
+        XMIN = rast_ext[1][0] + (cellSIZE*0.5)
+        YMAX = rast_ext[1][3] - (cellSIZE*0.5)
+        dx = (PKT[0] - XMIN)/cellSIZE
+        dy = (YMAX - PKT[1])/cellSIZE
+        col = int(dx)
+        row = int(dy)
+        R_array = arcpy.RasterToNumPyArray(R, nodata_to_value=np.nan)
+        print(dx, dy, R_array[col, row])
 
 print(ListaExtentR)
