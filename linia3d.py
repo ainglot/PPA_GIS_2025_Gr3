@@ -24,6 +24,15 @@ def odczytywanie_wspolrzednych(warstwa):
             ListaOb.append(ListaWsp)
     return ListaOb
 
+def punkt_na_rastrze(punkt, zakres_rastra):
+    x, y = punkt
+    xmin, ymin, xmax, ymax = zakres_rastra
+
+    return xmin <= x <= xmax and ymin <= y <= ymax
+
+
+
+
 WspLini = odczytywanie_wspolrzednych(warstwa_linii)
 print(WspLini)
 
@@ -40,6 +49,8 @@ for raster in rasters:
     print("Extent:", R.extent)
     ListaExtentR.append([raster, [R.extent.XMin, R.extent.YMin, R.extent.XMax, R.extent.YMax]])
 
-
+PKT = [474467.48060000036, 720576.0291000009]
+for rast_ext in ListaExtentR:
+    punkt_na_rastrze(PKT, rast_ext[1])
 
 print(ListaExtentR)
