@@ -31,7 +31,15 @@ def punkt_na_rastrze(punkt, zakres_rastra):
 
     return xmin <= x <= xmax and ymin <= y <= ymax
 
-
+def nowa_warstwa_punktowa(nazwa_warstwy, uklad_wsp, list_coor):
+    # list_coor = odczytywanie_pliku_txt("data.txt")
+    arcpy.management.CreateFeatureclass(arcpy.env.workspace, nazwa_warstwy, "POINT", "", "DISABLED", "ENABLED", uklad_wsp)
+    with arcpy.da.InsertCursor(nazwa_warstwy, ["SHAPE@X", "SHAPE@Y", "SHAPE@Z"]) as cursor:
+        for coor in list_coor:
+            X = coor[0]
+            Y = coor[1]
+            Z = coor[2]
+            cursor.insertRow([X, Y, Z])
 
 
 WspLini = odczytywanie_wspolrzednych(warstwa_linii)
@@ -50,6 +58,7 @@ for raster in rasters:
     print("Extent:", R.extent)
     ListaExtentR.append([raster, [R.extent.XMin, R.extent.YMin, R.extent.XMax, R.extent.YMax]])
 
+ListaPKT = []
 PKT = [474467.48060000036, 720576.0291000009]
 # PKT = [474192.0, 720689.0]
 for linia in WspLini:
@@ -68,5 +77,8 @@ for linia in WspLini:
                 R = arcpy.Raster(rast_ext[0])
                 R_array = arcpy.RasterToNumPyArray(R, nodata_to_value=np.nan)
                 print(dx, dy, R_array[row, col])
+                ListaPKT.append([PKT[0], PKT[1], R_array[row, col]])
 
-print(ListaExtentR)
+nowa_warstwa_punktowa("Punkty3D_ZTM", warstwa_linii, ListaPKT)
+
+print("KONIEC")
